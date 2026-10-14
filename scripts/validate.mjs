@@ -6,13 +6,13 @@ const dom = new JSDOM('<!doctype html><html><body><div id="root"></div></body></
 for (const k of ['window','document','HTMLElement','HTMLButtonElement','HTMLInputElement','Node','MutationObserver','getComputedStyle']) globalThis[k]=k==='getComputedStyle'?dom.window.getComputedStyle.bind(dom.window):dom.window[k]
 Object.defineProperty(globalThis,'navigator',{value:dom.window.navigator,configurable:true})
 globalThis.IS_REACT_ACT_ENVIRONMENT=true
-const result=await build({entryPoints:['src/App.tsx'],bundle:true,write:false,platform:'node',format:'esm',jsx:'automatic',external:['react','react-dom','react/jsx-runtime','lucide-react']})
+const result=await build({entryPoints:['src/App.tsx'],bundle:true,write:false,platform:'node',format:'esm',jsx:'automatic',external:['react','react-dom','react/jsx-runtime','lucide-react','motion/react']})
 const {writeFileSync,unlinkSync}=await import('node:fs')
 const testModule=new URL('../.qa-app.mjs',import.meta.url)
 writeFileSync(testModule,result.outputFiles[0].text)
 const {default:App}=await import(testModule.href)
 const React=await import('react')
-const {render,screen,fireEvent,cleanup}=await import('@testing-library/react')
+const {render,screen,fireEvent,cleanup,act}=await import('@testing-library/react')
 const {default:userEvent}=await import('@testing-library/user-event')
 const user=userEvent.setup({document:dom.window.document})
 try{
@@ -41,12 +41,50 @@ await user.keyboard('{Tab}');assert.equal(document.activeElement.getAttribute('a
 await user.keyboard('{Escape}')
 const menu=screen.getByRole('button',{name:'Abrir menu'});await user.click(menu);assert.equal(menu.getAttribute('aria-expanded'),'true')
 await user.click(screen.getByRole('link',{name:'Soluções'}));assert.equal(menu.getAttribute('aria-expanded'),'false')
+const pause=screen.getByRole('button',{name:'Pausar animações de fundo'})
+await user.click(pause);assert.equal(document.querySelector('.site-shell').dataset.motion,'paused')
+assert.equal(pause.getAttribute('aria-pressed'),'true')
+await user.click(screen.getByRole('button',{name:'Retomar animações de fundo'}))
+assert.equal(document.querySelector('.site-shell').dataset.motion,'active')
+for(const [index,kind] of ['performance','marca','digital','dados'].entries()) {
+ await user.click(tabs[index])
+ assert.equal(screen.getAllByRole('tabpanel').length,1)
+ assert.equal(screen.getByRole('tabpanel').querySelector('.service-visual').dataset.kind,kind)
+ assert.equal(screen.getByRole('tabpanel').querySelector('.service-visual').getAttribute('aria-hidden'),'true')
+}
 for(const a of document.querySelectorAll('a[href^="#"]'))assert.ok(document.getElementById(a.hash.slice(1)),`Missing anchor ${a.hash}`)
 for(const img of document.querySelectorAll('img'))assert.ok(existsSync('public'+img.getAttribute('src')),`Missing image ${img.src}`)
 for(const link of document.querySelectorAll('a[href]'))assert.notEqual(link.getAttribute('href'),'#')
-const css=readFileSync('src/styles.css','utf8');assert.match(css,/prefers-reduced-motion/)
+const css=readFileSync('src/styles.css','utf8')+readFileSync('src/effects.css','utf8');assert.match(css,/prefers-reduced-motion/)
 assert.match(css,/:focus-visible/)
 const html=readFileSync('index.html','utf8');assert.match(html,/noindex,nofollow/)
 for(const name of readdirSync('public/assets'))assert.ok(readFileSync('public/assets/'+name).length>0,`Empty asset ${name}`)
+// Observer and background lifecycle are exercised separately from the no-IO fallback above.
+cleanup()
+const observations=[]
+globalThis.IntersectionObserver=class {
+ constructor(callback){this.callback=callback;this.disconnected=false;observations.push(this)}
+ observe(element){this.element=element}
+ disconnect(){this.disconnected=true}
+}
+Object.defineProperty(document,'visibilityState',{configurable:true,value:'visible'})
+render(React.createElement(App))
+const backdrop=document.querySelector('.hero-atmosphere')
+const observer=observations.find(o=>o.element===backdrop)
+assert.ok(observer)
+await act(()=>observer.callback([{isIntersecting:true}]))
+assert.ok(backdrop.classList.contains('is-running'))
+await act(()=>observer.callback([{isIntersecting:false}]))
+assert.equal(backdrop.classList.contains('is-running'),false)
+await act(()=>observer.callback([{isIntersecting:true}]))
+Object.defineProperty(document,'visibilityState',{configurable:true,value:'hidden'})
+fireEvent(document,new dom.window.Event('visibilitychange'))
+assert.equal(backdrop.classList.contains('is-running'),false)
+Object.defineProperty(document,'visibilityState',{configurable:true,value:'visible'})
+fireEvent(document,new dom.window.Event('visibilitychange'))
+assert.ok(backdrop.classList.contains('is-running'))
+cleanup()
+assert.ok(observations.every(o=>o.disconnected),'Observers must disconnect on unmount')
+console.log('PASS: background pause toggle, 4 decorative scenes, visibility/intersection lifecycle and observer cleanup.');
 console.log('PASS: semantic structure, 4 service tabs, keyboard arrows/Home/End, team modal, Escape, focus restoration, form validity, WhatsApp message, focus trap, menu state, anchors, local images, reduced motion and review noindex.')
 }finally{cleanup();unlinkSync(testModule)}

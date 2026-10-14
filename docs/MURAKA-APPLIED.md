@@ -20,10 +20,10 @@ Lidos: `FRONTEND_GUIDELINES.md`, `docs/WORKFLOW.md`, `docs/LIBRARIES.md`, `docs/
 | Button.tsx | CTA consistente e ações dos planos | Paleta dourada, hover/focus e dimensões mobile |
 | Tabs.tsx | Exploração de quatro objetivos de negócio | Rótulo acessível contextual, conteúdo próprio e teclado preservado |
 | Modal.tsx | Formulário comercial e detalhes da equipe | Estilo da marca; Escape, restauração e contenção de foco preservados |
-| Reveal.tsx | Entrada discreta dos títulos e etapas | transform/opacity, fallback sem IntersectionObserver e reduced-motion por CSS |
+| Reveal.tsx + Magic UI BlurFade | Entrada dos títulos e etapas | Motion, blur de 4px, fallback sem IntersectionObserver, stagger e movimento reduzido |
 | Accordion.tsx | Perguntas práticas de contratação | Conteúdo da marca, disclosure nativo acessível |
 
-Não foram importados shadcn, React Bits, Magic UI ou Motion: o comportamento necessário já é coberto pelos componentes autorais do kit e CSS. Adicionar bibliotecas só para demonstrar uso aumentaria o bundle sem melhorar a jornada. Não foi importado o Studio nem alterado o repositório do kit.
+A revisão expressiva importa a adaptação de Magic UI BlurFade existente no kit e Motion 12.43.0 (versão efetiva do lockfile), para entradas de conteúdo. A licença MIT de Magic UI está preservada em src/vendor/magic-ui/LICENSE.md. Não foram importados shadcn ou React Bits. O Studio foi consultado como referência para superfícies e motion; ele não foi incorporado ao site e o repositório do kit permanece intacto.
 
 ## Decisões de experiência
 
@@ -36,3 +36,12 @@ Não foram importados shadcn, React Bits, Magic UI ou Motion: o comportamento ne
 ## Ativos e licenças
 
 Fotos e brasão obtidos dos URLs presentes na página original, convertidos para WebP; autorização de uso deve ser confirmada pelo proprietário antes da publicação. Fonte Sora variável de `google/fonts/ofl/sora`, com SIL Open Font License incluída em `public/assets/Sora-OFL.txt`. Ícones Lucide via pacote `lucide-react` (ISC). React/React DOM/Vite/Tailwind/TypeScript seguem suas licenças distribuídas nos pacotes. Componentes autorais do Muraka Dev Kit reutilizados no projeto do mesmo proprietário; o kit não declara licença pública no conteúdo consultado.
+
+## Revisão expressiva
+
+- Referências adicionais consultadas: starter/src/vendor/magic-ui/BlurFade.tsx, starter/src/vendor/react-bits/BlurText.tsx, starter/src/styles.css e starter/src/studio/config.ts. BlurText foi avaliado, mas não importado.
+- AmbientBackdrop e ServiceScene são implementações próprias deste projeto: luzes CSS, radar, camadas e fluxos SVG. Não são apresentados como componentes prontos do kit.
+- Cada solução recebe uma cor de luz: dourado, lavanda, verde suave e azul. A identidade geral continua preta, cobre e dourada.
+- Botões com acabamento de vidro, reflexo em hover/focus, bordas internas e fallback de fundo. Planos em marfim criam contraste; a estrutura aprovada de processo foi preservada.
+- Controle acessível de pausa para fundos, prefers-reduced-motion, prefers-reduced-transparency, pausa por IntersectionObserver/visibilidade e fallback sem observer. Sem canvas, WebGL ou loop JavaScript de renderização.
+- O destaque que segue o cursor altera variáveis CSS apenas em eventos de ponteiro fino; toque não depende desse efeito.
