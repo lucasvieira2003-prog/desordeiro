@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.qa-app.mjs
+.env
+.env.*
+
+desordeiro-preview.html
