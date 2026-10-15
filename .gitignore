@@ -6,3 +6,6 @@ dist/
 .env.*
 
 desordeiro-preview.html
+
+dist-html/
+.html-typecheck.js

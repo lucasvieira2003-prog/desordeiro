@@ -1,0 +1,21 @@
+name: Validate standalone HTML
+on:
+  pull_request:
+    paths: ['html/**', 'scripts/*html.mjs', '.github/workflows/validate-html.yml']
+  push:
+    branches: ['feat/studio-pro-html']
+permissions:
+  contents: read
+jobs:
+  html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/typecheck-html.mjs
+      - run: node scripts/validate-html.mjs
+      - run: node scripts/build-html.mjs
