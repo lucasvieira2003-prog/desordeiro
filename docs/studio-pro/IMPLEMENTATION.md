@@ -1,48 +1,44 @@
-# Desordeiro — implementação do Studio Pro em HTML
+# Desordeiro — HTML de revisão com referências dark/light
 
-## Destino e estado de origem
+## Resultado
 
-O repositório Desordeiro contém a versão anterior React 19 + TypeScript + Vite. O HTML independente mais recente fornecido pelo usuário foi materializado e comparado à versão de revisão: os bytes coincidiam. O novo destino é html/index.html, em branch própria. Nenhum arquivo do Muraka Dev Kit foi escrito ou alterado. A implementação React anterior permanece na branch-base para comparação.
+A composição usa as duas referências de agência e a referência de preços enviadas pelo usuário. O hero ficou centralizado, com fonte em escala menor, preto/grafite, branco quente e dourado. A abertura inclui uma escultura de contornos vetoriais própria. O conteúdo transita para o claro, com soluções, manifesto, processo e equipe em composições editoriais. O final retorna ao escuro para planos, FAQ e contato.
 
-## Contrato visual implementado
+O header mede 68px no desktop e 64px no mobile. A regra da classe icon-button estava tornando o menu visível também no desktop; uma regra específica do header agora oculta esse botão acima do breakpoint mobile. O header alterna sua tonalidade conforme a seção em leitura.
 
-- Hero minimalista, com título exato “Marcas extraordinárias não seguem fórmulas.”, descrição “Estratégia, criatividade e tecnologia para um novo patamar de presença.” e CTA “Vamos criar juntos”.
-- Archivo Black nos títulos e Archivo no corpo, com fallbacks. Fontes de google/fonts/ofl/archivo e google/fonts/ofl/archivoblack, sob SIL OFL. Versões WOFF reduzidas a Latin/Português e pontuação; licenças completas embutidas no HTML.
-- Tema claro, com fundos contínuos marfim, luzes champagne/douradas e lavanda discreta. Sem faixas de seção ou divisórias externas duras.
-- Hero tipográfico, soluções com navegação editorial, manifesto ligado ao scroll, processo com coluna sticky no desktop, retratos da equipe e planos em linhas. Composições diferentes, preservando conteúdo real.
-- Superfícies e botões em vidro, com raio 32px, reflexo de hover/focus, fallback de fundo e suporte a transparência reduzida.
-- Mesh gradient e liquid morph reais em CSS: border-radius orgânico, transformações e variação de escala. Intensidade 0.9 vinculada à amplitude das transformações. É um parâmetro de arte, não uma medida física.
-- Rolagem natural suave em âncoras; barra de progresso; deslocamento discreto das formas; leitura do manifesto e etapa ativa do processo guiadas pela posição real de scroll. Um requestAnimationFrame por evento de scroll/resize, sem loop contínuo JS e sem capturar/alterar wheel ou toque.
-- prefers-reduced-motion, pausa manual, suspensão com aba oculta e observer para formas fora da viewport. Mobile evita o sticky do processo e mantém leitura linear.
+Os planos passaram de linhas para três cartões de vidro escuro, com título grande parcialmente atrás, preço em destaque, lista de serviços e CTA. Os valores R$4.000, R$7.500 e R$12.000 por mês e seus serviços foram preservados. O plano intermediário ganha CTA claro, sem alegações de ser o mais vendido ou recomendado.
 
-## Recursos do kit consultados
+## Identidade, conteúdo e originalidade
 
-Commit 4a987c5e94085895295433696aca683f115466c0 de lucasvieira2003-prog/muraka-dev-kit.
+- Archivo Black + Archivo locais/licenciadas e fontes fallback.
+- Dourado como acento, sem reproduzir o vermelho ou roxo das referências.
+- Escultura SVG autoral, construída por projeção de seções de uma superfície toroidal. Não é um shader, vídeo, render 3D em tempo real ou imagem copiada.
+- Efeitos de movimento usam transformações CSS, entrada de conteúdo e rolagem. Sem bolhas claras permanentes, fundo mesh global ou deformação de botões.
+- Conteúdo comercial, pessoas e contatos da versão anterior mantidos. Nenhuma estatística, case ou depoimento inventado.
+- Nenhum arquivo do Muraka Dev Kit foi escrito ou alterado.
 
-Consultados: Creative Engine (creative-direction/README.md, desordeiro-case-study.md, starter/src/creative/model.ts), Layout Library (layouts/README.md, HeroLayouts.tsx), Motion Engine, Creative QA, docs/STUDIO_PRO.md, HeroPreview.tsx e hero-preview.css.
+O kit foi consultado no commit 4a987c5e94085895295433696aca683f115466c0: Creative Engine, caso Desordeiro, Layout Library, Motion Engine, Creative QA e Studio Pro. A composição final foi adaptada às referências mais recentes; não é uma cópia literal do preset inicial.
 
-O hero minimal, a composição editorial e os tratamentos de mesh/glass/morph servem de referência. O HTML/CSS/JS final foi adaptado para a marca e não importa o Studio, templates comerciais, shaders ou a aplicação React do kit.
+## Funcionamento
 
-## Comportamento funcional
+Quatro soluções com abas e teclado, menu mobile, detalhes da equipe em dialog, formulário validado que prepara mensagem para WhatsApp, FAQs nativas, telefone e Instagram. A rolagem controla progresso, deslocamento discreto do visual, leitura do manifesto e indicação do processo. A estrutura sticky do processo se torna leitura linear no mobile.
 
-Quatro soluções com abas e ArrowUp/Down/Left/Right/Home/End; menu mobile expansível com Escape; detalhes da equipe em dialog nativo; formulário com validação que prepara a mensagem de WhatsApp; foco contido/restaurado; FAQs nativas; Instagram e telefone reais extraídos da versão anterior. Nenhuma mensagem foi enviada e nenhum dado é armazenado. Preços e telefone ainda exigem confirmação comercial antes de publicar.
+Preferência por movimento reduzido, pausa manual, suspensão com aba oculta e pausa fora da viewport estão preservadas. O SVG é um elemento decorativo sem impacto na leitura assistiva. A página não armazena dados do formulário, envia mensagens automaticamente ou faz pedidos a CDNs.
 
-## Dependências
+## Tecnologia e assets
 
-Nenhuma dependência de runtime adicionada. Sem React, Motion, GSAP, WebGL, Lenis, shaders, trackers ou fontes externas na página entregue. Fontes e imagens estão embutidas. Esbuild, TypeScript e JSDOM existentes são usados apenas nos verificadores de desenvolvimento.
+Um único HTML, cerca de 451 KB, contém CSS, JavaScript, SVG, fotos WebP e fontes WOFF. Sem novas dependências de runtime; sem React, Motion, GSAP ou WebGL na página final. Esbuild, TypeScript e JSDOM existentes são ferramentas de desenvolvimento. Fontes de google/fonts/ofl/archivo e google/fonts/ofl/archivoblack sob SIL OFL, com licenças completas embutidas no HTML.
 
-## Testes executados
+## Validação executada
 
-- node scripts/typecheck-html.mjs — TypeScript checkJs aplicado ao JavaScript do HTML: aprovado.
-- node scripts/validate-html.mjs — sintaxe CSS/JS, assets embutidos, metadados, âncoras, quatro abas/teclado, menu, dialogs/cancel/foco, formulário inválido/válido, mensagem de WhatsApp, seleção de objetivo, perfis, pausa, movimento reduzido, reveal, estado de processo/progresso e limpeza de observers: aprovado.
-- node scripts/build-html.mjs — HTML completo, validação de sintaxe e cópia estática: aprovado.
-- Tamanho do HTML ~366 KB, com fontes e imagens. Payload comprimido estimado ~248 KB; não é medição de rede, Lighthouse ou Core Web Vitals.
-- Largura tipográfica da maior palavra do hero calculada com as métricas reais de Archivo Black para 320/375/390/768/1024/1440; cabe na largura prevista. Isso não substitui QA de overflow.
+- node scripts/typecheck-html.mjs — checkJs do JavaScript embutido: aprovado.
+- node scripts/validate-html.mjs — sintaxe CSS/JS, fontes/imagens embutidas, âncoras, título, abas/teclado, menu, dialogs/cancel/foco, formulário inválido/válido, mensagem de WhatsApp, objetivo por serviço, perfis, pausa, reduced-motion, progresso/processo e limpeza de observers: aprovado.
+- Verificações adicionais via DOM/CSS do JSDOM: header desktop de 68px, menu desktop oculto, hero alinhado ao centro, escultura decorativa presente, conteúdo claro na área correta e três planos com preços/CTAs/serviços: aprovado.
+- node scripts/build-html.mjs — validação e cópia estática para dist-html/index.html: aprovado.
+- Asset da escultura visualizado individualmente. Métricas de Archivo Black calculadas para a maior palavra do hero nas larguras 320/375/390/768/1024/1440.
 
-## Capturas e limitações
+## Limitações
 
-A captura Playwright foi tentada, mas o executável Chromium não está instalado no ambiente; tampouco há navegador de sistema disponível. Não foram gerados screenshots desktop/mobile. JSDOM não renderiza CSS: o teste de dialog usa uma adaptação da API e não valida o visual nativo. Overflow, recortes, efeitos de vidro e performance de animação precisam ser conferidos em navegador antes da publicação. Não há aprovação visual automática nem scores inventados.
+JSDOM não renderiza a página como navegador e não valida overflow ou recortes reais. A inspeção visual desktop/mobile, transparência dos cartões e performance de animação seguem pendentes, porque o ambiente não dispõe do executável Chromium. Não foram produzidos screenshots da nova página nem scores Lighthouse. O teste de dialog usa adaptação da API e não prova seu visual nativo.
 
-## Diferenças frente à prévia do kit
-
-A prévia do Studio é demonstrativa. Aqui, o conteúdo é da Desordeiro; CTAs e formulário têm destinos reais. O hero minimal foi combinado com mesh/morph de fundo sem deformar botões e textos. A rolagem foi implementada além da demonstração CSS do kit. O brasão aparece como assinatura discreta, com retratos reais da equipe. Não foram usados números, avaliações ou depoimentos ilustrativos. Não há vídeo obrigatório nem simulação de shader.
+O site permanece em revisão, sem deploy, merge, DNS ou envio de mensagem. Antes da publicação, conferir a versão em navegador, confirmar preços/telefone e definir os metadados do domínio final e a liberação de indexação.

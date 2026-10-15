@@ -1,25 +1,25 @@
-# Desordeiro — Studio Pro / HTML independente
+# Desordeiro — HTML independente
 
-`index.html` é a landing page completa. Inclui CSS, JavaScript, imagens WebP e fontes WOFF em data URLs. Pode ser baixado e aberto diretamente no navegador, sem React, npm ou servidor.
+`index.html` é a landing page completa: HTML, CSS, JavaScript, fontes Archivo/Archivo Black e fotografias locais embutidas. Pode ser aberta diretamente no navegador.
 
-Direção: Minimal absoluto, tema claro, dourado/champagne, mesh gradient, Archivo Black + Archivo, botões glass e liquid morph CSS com intensidade configurada em 0.9.
+## Direção atual
 
-## Cloudflare Pages
+Hero centralizado sobre fundo escuro e escultura vetorial original de contornos; header de 68px no desktop/64px no mobile; transição dark → claro; conteúdo editorial claro; planos em três cartões de vidro escuro; FAQ, contato e rodapé no escuro. Dourado permanece como acento da marca.
 
-Após aprovação:
+Os layouts enviados pelo usuário são referências de composição, sem copiar marcas, imagens ou código de templates.
+
+## Cloudflare Pages após aprovação
 
 - Repositório: lucasvieira2003-prog/desordeiro
 - Branch de revisão: feat/studio-pro-html
 - Framework: nenhum
-- Comando de build: deixar vazio
+- Comando de build: vazio
 - Diretório estático: html
-- Nenhuma variável de ambiente ou segredo necessário
+- Sem segredos ou variáveis de ambiente
 
-Não foi criado projeto Pages, deploy, merge ou configuração de domínio. A versão está com noindex para revisão; definir metadados do domínio final e liberar indexação só ao aprovar a publicação.
+A versão permanece com noindex. Não foi feito deploy, merge ou alteração de domínio.
 
-## Verificação de desenvolvimento
-
-Os verificadores usam as ferramentas de desenvolvimento já existentes no repositório; a página final não precisa delas:
+## Validação
 
 ```sh
 npm ci
@@ -28,6 +28,6 @@ node scripts/validate-html.mjs
 node scripts/build-html.mjs
 ```
 
-O último comando valida e copia o HTML para dist-html/index.html. Pode ser utilizado como alternativa ao diretório html.
+As dependências já existentes no repositório servem apenas para os verificadores. A página entregue não precisa de React, npm ou bibliotecas externas. O build opcional copia o arquivo para dist-html/index.html.
 
-Leia docs/studio-pro/IMPLEMENTATION.md para fontes, testes, limitações e diferenças em relação à prévia do kit.
+Detalhes em docs/studio-pro/IMPLEMENTATION.md. Layout e overflow ainda precisam de conferência visual em navegador.

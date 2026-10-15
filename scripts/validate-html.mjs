@@ -26,6 +26,19 @@ assert.equal(doc.querySelectorAll('script[src],link[rel=stylesheet],video').leng
 const css=doc.querySelector('style').textContent,js=doc.querySelector('#site-script').textContent
 assert.match(css,/prefers-reduced-motion/);assert.match(css,/@keyframes liquid-morph/);assert.match(css,/--motion-intensity:\.9/);assert.match(css,/backdrop-filter/)
 transformSync(css,{loader:'css'});transformSync(js,{loader:'js'})
+assert.equal(window.getComputedStyle(doc.querySelector('.header .menu-toggle')).display,'none','Desktop menu button must be hidden')
+assert.equal(window.getComputedStyle(doc.querySelector('.header')).height,'68px','Desktop header must be compact')
+assert.equal(window.getComputedStyle(doc.querySelector('.hero')).textAlign,'center')
+assert.ok(doc.querySelector('.light-stage #solucoes'))
+assert.ok(doc.querySelectorAll('.hero-sculpture .sculpture-svg path').length>100)
+const cards=[...doc.querySelectorAll('.closing-dark .plan-card')];assert.equal(cards.length,3)
+for(const [index,card] of cards.entries()){
+ assert.equal(card.querySelector('[data-goal]').getAttribute('data-goal'),'Conhecer o Plano 0'+(index+1))
+ assert.ok(card.querySelector('ul').children.length>=2)
+}
+assert.match(cards[0].querySelector('.price').textContent,/4.000/)
+assert.match(cards[1].querySelector('.price').textContent,/7.500/)
+assert.match(cards[2].querySelector('.price').textContent,/12.000/)
 const tabs=[...doc.querySelectorAll('[role=tab]')],panels=[...doc.querySelectorAll('[role=tabpanel]')]
 assert.equal(tabs.length,4)
 for(let i=0;i<4;i++){click(tabs[i]);assert.equal(panels.filter(p=>!p.hidden).length,1);assert.equal(tabs[i].getAttribute('aria-selected'),'true');assert.equal(panels[i].hidden,false)}
@@ -52,6 +65,7 @@ const steps=[...doc.querySelectorAll('.process-step')];steps.forEach((step,i)=>s
 window.dispatchEvent(new window.Event('scroll'));await new Promise(r=>setTimeout(r,50));assert.equal(doc.querySelector('#step-number').textContent,'03');assert.ok(Number(doc.documentElement.style.getPropertyValue('--scroll-progress'))>0)
 window.dispatchEvent(new window.Event('pagehide'));assert.ok(observations.every(o=>o.disconnected))
 assert.equal(errors.length,0,errors.join('\n'))
+console.log('PASS: compact desktop header, hidden desktop menu, centered hero, original contour scene, light content stage and 3 functional pricing cards.');
 console.log('PASS: standalone assets, CSS/JS syntax, title, anchors, 4 tabs and keyboard, mobile menu state, dialogs/cancel/focus trap/restoration, invalid/valid form, prepared WhatsApp message, service goals, team profiles, reduced-motion, pause, reveal, scroll progress/process and observer cleanup.')
 console.log('Layout, native dialog rendering and overflow need browser QA; JSDOM does not render CSS.')
 }finally{window.close()}
